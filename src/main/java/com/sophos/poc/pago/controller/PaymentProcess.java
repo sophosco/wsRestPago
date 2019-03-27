@@ -1,4 +1,4 @@
-package com.sophos.poc.controller;
+package com.sophos.poc.pago.controller;
 
 import java.util.Date;
 import java.util.UUID;
@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.sophos.poc.model.Payment;
-import com.sophos.poc.model.PaymentResponse;
-import com.sophos.poc.model.Status;
+import com.sophos.poc.pago.model.Payment;
+import com.sophos.poc.pago.model.PaymentResponse;
+import com.sophos.poc.pago.model.Status;
 
 @Service
 public class PaymentProcess {

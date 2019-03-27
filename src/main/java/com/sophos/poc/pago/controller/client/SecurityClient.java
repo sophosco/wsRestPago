@@ -1,4 +1,4 @@
-package com.sophos.poc.controller.client;
+package com.sophos.poc.pago.controller.client;
 
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sophos.poc.model.Status;
-import com.sophos.poc.model.security.RequestHeader;
-import com.sophos.poc.model.security.RequestPayload;
-import com.sophos.poc.model.security.TokenRequest;
+import com.sophos.poc.pago.model.Status;
+import com.sophos.poc.pago.model.security.RequestHeader;
+import com.sophos.poc.pago.model.security.RequestPayload;
+import com.sophos.poc.pago.model.security.TokenRequest;
 
 @Service
 public class SecurityClient{

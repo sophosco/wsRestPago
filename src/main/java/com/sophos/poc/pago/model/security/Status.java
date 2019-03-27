@@ -1,4 +1,4 @@
-package com.sophos.poc.model.security;
+package com.sophos.poc.pago.model.security;
 
 public class Status {
 	private String code;

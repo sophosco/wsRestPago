@@ -1,4 +1,4 @@
-package com.sophos.poc.model.audit;
+package com.sophos.poc.pago.model.audit;
 
 import java.util.Date;
 

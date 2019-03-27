@@ -17,12 +17,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sophos.poc.controller.PaymentController;
-import com.sophos.poc.controller.PaymentProcess;
-import com.sophos.poc.controller.client.AuditClient;
-import com.sophos.poc.controller.client.SecurityClient;
-import com.sophos.poc.model.Payment;
-import com.sophos.poc.model.Status;
+import com.sophos.poc.pago.controller.PaymentController;
+import com.sophos.poc.pago.controller.PaymentProcess;
+import com.sophos.poc.pago.controller.client.AuditClient;
+import com.sophos.poc.pago.controller.client.SecurityClient;
+import com.sophos.poc.pago.model.Payment;
+import com.sophos.poc.pago.model.Status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class WsRestPagoApplicationTests {

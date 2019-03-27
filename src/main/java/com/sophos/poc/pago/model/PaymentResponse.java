@@ -1,4 +1,4 @@
-package com.sophos.poc.model;
+package com.sophos.poc.pago.model;
 
 public class PaymentResponse {
 	

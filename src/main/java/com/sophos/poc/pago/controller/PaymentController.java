@@ -1,4 +1,4 @@
-package com.sophos.poc.controller;
+package com.sophos.poc.pago.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sophos.poc.controller.client.AuditClient;
-import com.sophos.poc.controller.client.SecurityClient;
-import com.sophos.poc.model.Payment;
-import com.sophos.poc.model.Status;
+import com.sophos.poc.pago.controller.client.AuditClient;
+import com.sophos.poc.pago.controller.client.SecurityClient;
+import com.sophos.poc.pago.model.Payment;
+import com.sophos.poc.pago.model.Status;
 
 
 @RestController

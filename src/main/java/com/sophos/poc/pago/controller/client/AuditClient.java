@@ -1,4 +1,4 @@
-package com.sophos.poc.controller.client;
+package com.sophos.poc.pago.controller.client;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,9 +16,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sophos.poc.model.Payment;
-import com.sophos.poc.model.Status;
-import com.sophos.poc.model.audit.Audit;
+import com.sophos.poc.pago.model.Payment;
+import com.sophos.poc.pago.model.Status;
+import com.sophos.poc.pago.model.audit.Audit;
 
 @EnableAsync
 @Service
