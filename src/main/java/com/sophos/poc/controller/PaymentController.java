@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sophos.poc.controller.client.AuditClient;
 import com.sophos.poc.controller.client.SecurityClient;
 import com.sophos.poc.model.Payment;
 import com.sophos.poc.model.Status;
@@ -24,9 +25,14 @@ public class PaymentController {
 	@Autowired
 	private PaymentProcess paymentProcess;
 	
-	public PaymentController(SecurityClient securityClient, PaymentProcess paymentProcess) {
+	@Autowired
+	private AuditClient auditClient;
+	
+	
+	public PaymentController(SecurityClient securityClient, PaymentProcess paymentProcess, AuditClient auditClient) {
 		this.securityClient = securityClient;
 		this.paymentProcess = paymentProcess;
+		this.auditClient = auditClient;
 	}
 
 	@RequestMapping(value = "/api/payment/add", method = RequestMethod.POST)
@@ -36,11 +42,12 @@ public class PaymentController {
 			@RequestHeader(value = "X-Channel", required = true) String xChannel,
 			@RequestHeader(value = "X-IPAddr", required = true) String xIPAddr,
 			@RequestHeader(value = "X-Sesion", required = true) String xSesion,
-			@RequestHeader(value = "X-haveToken", required = true) boolean xHaveToken,
-			@RequestHeader(value = "X-isError", required = true) boolean xIsError,
+			@RequestHeader(value = "X-haveToken", required = false, defaultValue = "true") boolean xHaveToken,
+			@RequestHeader(value = "X-isError", required = false, defaultValue = "false") boolean xIsError,
 			@RequestBody Payment payment) {
 
 		try {
+			
 			if((xSesion == null || xSesion.isEmpty()) || (xHaveToken && HttpStatus.UNAUTHORIZED.equals(securityClient.verifyJwtToken(xSesion).getStatusCode()))) {
 				Status status = new Status("500","El token no es valido o ya expiro. Intente mas tarde", "ERROR Ocurrio una exception inesperada", null);
 				return new ResponseEntity<>(status, HttpStatus.UNAUTHORIZED);
@@ -55,6 +62,16 @@ public class PaymentController {
 				return new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
+			auditClient.saveAudit(
+						payment.getIdSesion(),
+						payment.getIdUsuario(),
+						"Realizar Orden",
+						"Realiza el proceso de Pago posterior a la confirmación del usuario",
+						"Modulo de Pago",
+						null,
+						null,
+						payment
+			);
 			return paymentProcess.executePayment(payment, xIsError);
 
 		} catch (Exception e) {

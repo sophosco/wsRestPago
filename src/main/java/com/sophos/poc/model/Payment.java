@@ -5,6 +5,8 @@ import java.util.Date;
 public class Payment {
 	
 	private String uuid;
+	private String idSesion;
+	private String idUsuario;
 	private Date createDate;
 	private CreditCard creditCard;
 	private PaymentGateway paymentGateway;
@@ -50,7 +52,32 @@ public class Payment {
 	public void setCustomerPortfolio(CustomerPortfolio customerPortfolio) {
 		this.customerPortfolio = customerPortfolio;
 	}
-	
+	public String getIdSesion() {
+		return idSesion;
+	}
+	public void setIdSesion(String idSesion) {
+		this.idSesion = idSesion;
+	}
+	public String getIdUsuario() {
+		return idUsuario;
+	}
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+
+	public Payment(String uuid, String idSesion, String idUsuario, Date createDate, CreditCard creditCard,
+			PaymentGateway paymentGateway, CustomerPortfolio customerPortfolio, Double ammount) {
+		super();
+		this.uuid = uuid;
+		this.idSesion = idSesion;
+		this.idUsuario = idUsuario;
+		this.createDate = createDate;
+		this.creditCard = creditCard;
+		this.paymentGateway = paymentGateway;
+		this.customerPortfolio = customerPortfolio;
+		this.ammount = ammount;
+	}
 }
 	
 	
