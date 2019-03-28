@@ -27,7 +27,11 @@ public class PaymentProcess {
 			paymentResponse.setApprovalCode(System.currentTimeMillis()+"".lastIndexOf(4)+"");
 			paymentResponse.setFeeTax(new Double(3000));
 			Status status = new Status("0", "", "Operacion Exitosa", paymentResponse);
-			return new ResponseEntity<>(status, HttpStatus.OK);		
+			
+			ResponseEntity<Status> response = new ResponseEntity<Status>(status, HttpStatus.OK);
+			response.getHeaders().set("Access-Control-Allow-Origin", "*");
+			response.getHeaders().set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+			return response;		
 		}
 	}
 }

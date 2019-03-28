@@ -42,7 +42,7 @@ public class PaymentController {
 			@RequestHeader(value = "X-Channel", required = true) String xChannel,
 			@RequestHeader(value = "X-IPAddr", required = true) String xIPAddr,
 			@RequestHeader(value = "X-Sesion", required = true) String xSesion,
-			@RequestHeader(value = "X-haveToken", required = false, defaultValue = "true") boolean xHaveToken,
+			@RequestHeader(value = "X-HaveToken", required = false, defaultValue = "true") boolean xHaveToken,
 			@RequestHeader(value = "X-isError", required = false, defaultValue = "false") boolean xIsError,
 			@RequestBody Payment payment) {
 
@@ -65,7 +65,7 @@ public class PaymentController {
 			auditClient.saveAudit(
 						payment.getIdSesion(),
 						payment.getIdUsuario(),
-						"Realizar Orden",
+						"Realizar Pago",
 						"Realiza el proceso de Pago posterior a la confirmación del usuario",
 						"Modulo de Pago",
 						null,
@@ -76,7 +76,10 @@ public class PaymentController {
 
 		} catch (Exception e) {
 			Status status = new Status("500", e.getMessage(), "ERROR Ocurrio una exception inesperada", null);
-			return new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);		
+			ResponseEntity<Status> response = new ResponseEntity<Status>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+			response.getHeaders().set("Access-Control-Allow-Origin", "*");
+			response.getHeaders().set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+			return response;		
 		}
 	}
 
