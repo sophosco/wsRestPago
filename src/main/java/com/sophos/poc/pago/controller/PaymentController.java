@@ -75,10 +75,9 @@ public class PaymentController {
 			return paymentProcess.executePayment(payment, xIsError);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			Status status = new Status("500", e.getMessage(), "ERROR Ocurrio una exception inesperada", null);
 			ResponseEntity<Status> response = new ResponseEntity<Status>(status, HttpStatus.INTERNAL_SERVER_ERROR);
-			response.getHeaders().set("Access-Control-Allow-Origin", "*");
-			response.getHeaders().set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 			return response;		
 		}
 	}

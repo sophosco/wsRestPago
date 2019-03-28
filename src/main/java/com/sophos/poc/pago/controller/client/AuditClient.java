@@ -56,7 +56,6 @@ public class AuditClient {
 					String.class);
 			
 		}catch(Exception e) {
-			e.printStackTrace();
 			System.err.println("Ocurrio un error al registrar auditoria de Pago "+e.getMessage());
 		}
 		return new ResponseEntity<>(HttpStatus.OK);

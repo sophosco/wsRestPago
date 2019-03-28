@@ -29,8 +29,6 @@ public class PaymentProcess {
 			Status status = new Status("0", "", "Operacion Exitosa", paymentResponse);
 			
 			ResponseEntity<Status> response = new ResponseEntity<Status>(status, HttpStatus.OK);
-			response.getHeaders().set("Access-Control-Allow-Origin", "*");
-			response.getHeaders().set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 			return response;		
 		}
 	}
