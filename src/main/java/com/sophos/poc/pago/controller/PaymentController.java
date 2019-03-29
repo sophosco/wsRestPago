@@ -64,7 +64,7 @@ public class PaymentController {
 			
 			auditClient.saveAudit(
 						payment.getIdSesion(),
-						payment.getIdUsuario(),
+						payment.getIdUser(),
 						"Realizar Pago",
 						"Realiza el proceso de Pago posterior a la confirmación del usuario",
 						"Modulo de Pago",

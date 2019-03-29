@@ -8,6 +8,7 @@ public class CustomerPortfolio {
 	private String entityCode;
 	private String tokenAuthorization;
 	private Date applicationDate;
+	private String portafolio;
 	
 	public CustomerPortfolio() {}
 	
@@ -34,5 +35,12 @@ public class CustomerPortfolio {
 	}
 	public void setApplicationDate(Date applicationDate) {
 		this.applicationDate = applicationDate;
+	}
+
+	public String getPortafolio() {
+		return portafolio;
+	}
+	public void setPortafolio(String portafolio) {
+		this.portafolio = portafolio;
 	}
 }

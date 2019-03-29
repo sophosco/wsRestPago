@@ -6,7 +6,7 @@ public class Payment {
 	
 	private String uuid;
 	private String idSesion;
-	private String idUsuario;
+	private String idUser;
 	private Date createDate;
 	private CreditCard creditCard;
 	private PaymentGateway paymentGateway;
@@ -58,26 +58,18 @@ public class Payment {
 	public void setIdSesion(String idSesion) {
 		this.idSesion = idSesion;
 	}
-	public String getIdUsuario() {
-		return idUsuario;
-	}
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+
+
+	public String getIdUser() {
+		return idUser;
 	}
 
 
-	public Payment(String uuid, String idSesion, String idUsuario, Date createDate, CreditCard creditCard,
-			PaymentGateway paymentGateway, CustomerPortfolio customerPortfolio, Double ammount) {
-		super();
-		this.uuid = uuid;
-		this.idSesion = idSesion;
-		this.idUsuario = idUsuario;
-		this.createDate = createDate;
-		this.creditCard = creditCard;
-		this.paymentGateway = paymentGateway;
-		this.customerPortfolio = customerPortfolio;
-		this.ammount = ammount;
+	public void setIdUser(String idUser) {
+		this.idUser = idUser;
 	}
+
+
 }
 	
 	
