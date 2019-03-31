@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: wsrestpago-deployment
+  namespace: dev
+  labels:
+    app: wsrestpago
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wsrestpago
+  template:
+    metadata:
+      labels:
+        app: wsrestpago
+    spec:
+      containers:
+        - name: wsrestpago
+          image: 887482798966.dkr.ecr.us-east-2.amazonaws.com/sophosstore/wsrestpago:beta
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "200m"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 18080
+          command: [ "/bin/sh", "-c", "env" ]
+          envFrom:
+          - configMapRef:
+              name: wsrestpago-configmap
