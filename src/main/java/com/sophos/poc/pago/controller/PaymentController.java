@@ -1,5 +1,7 @@
 package com.sophos.poc.pago.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sophos.poc.pago.controller.client.AuditClient;
 import com.sophos.poc.pago.controller.client.SecurityClient;
 import com.sophos.poc.pago.model.Payment;
@@ -28,6 +32,8 @@ public class PaymentController {
 	@Autowired
 	private AuditClient auditClient;
 	
+	private static final Logger logger = LogManager.getLogger(PaymentController.class);
+
 	
 	public PaymentController(SecurityClient securityClient, PaymentProcess paymentProcess, AuditClient auditClient) {
 		this.securityClient = securityClient;
@@ -47,6 +53,10 @@ public class PaymentController {
 			@RequestBody Payment payment) {
 
 		try {
+			
+			ObjectMapper jacksonMapper = new ObjectMapper();
+			jacksonMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+			logger.debug(xRqUID +" - Request - "+jacksonMapper.writeValueAsString(payment));
 			
 			if((xSesion == null || xSesion.isEmpty()) || (xHaveToken && HttpStatus.UNAUTHORIZED.equals(securityClient.verifyJwtToken(xSesion).getStatusCode()))) {
 				Status status = new Status("500","El token no es valido o ya expiro. Intente mas tarde", "ERROR Ocurrio una exception inesperada", null);
@@ -70,12 +80,16 @@ public class PaymentController {
 						"Modulo de Pago",
 						null,
 						null,
+						xHaveToken,
 						payment
 			);
-			return paymentProcess.executePayment(payment, xIsError);
+
+			ResponseEntity<Status> res = paymentProcess.executePayment(payment, xIsError);
+			logger.debug(xRqUID +" - Response - "+jacksonMapper.writeValueAsString(res));
+			return res;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Ocurrio una exception inesperada", e);
 			Status status = new Status("500", e.getMessage(), "ERROR Ocurrio una exception inesperada", null);
 			ResponseEntity<Status> response = new ResponseEntity<Status>(status, HttpStatus.INTERNAL_SERVER_ERROR);
 			return response;		

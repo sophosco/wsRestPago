@@ -60,7 +60,7 @@ public class WsRestPagoApplicationTests {
 		when(securityClient.verifyJwtToken(xSesion)).
 			thenReturn(new ResponseEntity<Status>(HttpStatus.OK));
 		
-		when(auditClient.saveAudit(idSesion, idUsuario, "Realizar Orden", "Realiza el proceso de Pago posterior a la confirmación del usuario", "HttpStatus", null, null, payment)).
+		when(auditClient.saveAudit(idSesion, idUsuario, "Realizar Orden", "Realiza el proceso de Pago posterior a la confirmación del usuario", "HttpStatus", null, null, false, payment)).
 			thenReturn(new ResponseEntity<Status>(HttpStatus.OK));
 	
 		Status status = new Status("0", "Operacion Exitosa", "", null);
@@ -95,7 +95,7 @@ public class WsRestPagoApplicationTests {
 		String xSesion  = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RJZCI6IjExNTUzNjM2MDY5OTIxIiwiaWF0IjoxNTUzNjM2MDY5LCJleHAiOjE1NTM2MzY0ODksImF1ZCI6IkFWQUwiLCJpc3MiOiJQT0NBVkFMIiwic3ViIjoiU2Vzc2lvblRva2VuIn0.BZQyw-fqRiOikH4GgVJjyYNusEnS3bLD0E4MLuspu2w9mg1lo0VGTKCIzSEFPGteX6QjoKxhKj8dBYgnANF-Jw";
 		boolean xHaveToken = true;
 		
-		when(auditClient.saveAudit(idSesion, idUsuario, "Realizar Orden", "Realiza el proceso de Pago posterior a la confirmación del usuario", "HttpStatus", null, null, payment)).
+		when(auditClient.saveAudit(idSesion, idUsuario, "Realizar Orden", "Realiza el proceso de Pago posterior a la confirmación del usuario", "HttpStatus", null, null, false, payment)).
 			thenReturn(new ResponseEntity<Status>(HttpStatus.INTERNAL_SERVER_ERROR));
 		
 		when(securityClient.verifyJwtToken(xSesion)).
