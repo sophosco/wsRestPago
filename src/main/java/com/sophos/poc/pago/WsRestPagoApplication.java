@@ -10,6 +10,7 @@ public class WsRestPagoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WsRestPagoApplication.class, args);
+		
 	}
 	
 

@@ -24,7 +24,7 @@ import com.sophos.poc.pago.model.Status;
 public class PaymentController {
 	
 	@Autowired
-	private SecurityClient securityClient;
+	private SecurityClient securityClient; 
 	
 	@Autowired
 	private PaymentProcess paymentProcess;
@@ -52,8 +52,7 @@ public class PaymentController {
 			@RequestHeader(value = "X-isError", required = false, defaultValue = "false") boolean xIsError,
 			@RequestBody Payment payment) {
 
-		try {
-			
+		try {			
 			ObjectMapper jacksonMapper = new ObjectMapper();
 			jacksonMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 			logger.debug(xRqUID +" - Request - "+jacksonMapper.writeValueAsString(payment));
@@ -87,6 +86,7 @@ public class PaymentController {
 			ResponseEntity<Status> res = paymentProcess.executePayment(payment, xIsError);
 			logger.debug(xRqUID +" - Response - "+jacksonMapper.writeValueAsString(res));
 			return res;
+			
 
 		} catch (Exception e) {
 			logger.error("Ocurrio una exception inesperada", e);
