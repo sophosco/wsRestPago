@@ -55,7 +55,7 @@ public class PaymentController {
 		try {			
 			ObjectMapper jacksonMapper = new ObjectMapper();
 			jacksonMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-			logger.debug(xRqUID +" - Request - "+jacksonMapper.writeValueAsString(payment));
+			logger.info(xRqUID +" - Request - "+jacksonMapper.writeValueAsString(payment));
 			
 			if((xSesion == null || xSesion.isEmpty()) || (xHaveToken && HttpStatus.UNAUTHORIZED.equals(securityClient.verifyJwtToken(xSesion).getStatusCode()))) {
 				Status status = new Status("500","El token no es valido o ya expiro. Intente mas tarde", "ERROR Ocurrio una exception inesperada", null);
@@ -72,7 +72,7 @@ public class PaymentController {
 			}
 			
 			auditClient.saveAudit(
-						payment.getIdSesion(),
+						xSesion,
 						payment.getIdUser(),
 						"Realizar Pago",
 						"Realiza el proceso de Pago posterior a la confirmación del usuario",
@@ -84,7 +84,7 @@ public class PaymentController {
 			);
 
 			ResponseEntity<Status> res = paymentProcess.executePayment(payment, xIsError);
-			logger.debug(xRqUID +" - Response - "+jacksonMapper.writeValueAsString(res));
+			logger.info(xRqUID +" - Response - "+jacksonMapper.writeValueAsString(res));
 			return res;
 			
 
