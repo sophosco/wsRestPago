@@ -2,6 +2,9 @@ package com.sophos.poc.pago.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "documentType"})
 public class PaymentGateway {
 	
 	private String authorizationId;
