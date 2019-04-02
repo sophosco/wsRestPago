@@ -15,6 +15,8 @@ import com.sophos.poc.pago.model.security.TokenRequest;
 @Service
 public class SecurityClient{
 
+	
+	
 	public ResponseEntity<Status> verifyJwtToken(String jwt) throws JsonProcessingException{
 		RestTemplate restTemplate = new RestTemplate(); 
 		TokenRequest tokenRq = new TokenRequest();

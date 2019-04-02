@@ -3,6 +3,8 @@ package com.sophos.poc.pago.controller.client;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,8 @@ import com.sophos.poc.pago.model.audit.Audit;
 @EnableAsync
 @Service
 public class AuditClient {
+
+	private static final Logger logger = LogManager.getLogger(AuditClient.class);
 
 	@Async
 	public ResponseEntity<Status> saveAudit(
@@ -57,7 +61,7 @@ public class AuditClient {
 					String.class);
 			
 		}catch(Exception e) {
-			System.err.println("Ocurrio un error al registrar auditoria de Pago "+e.getMessage());
+			logger.error("Ocurrio un error al registrar auditoria de Pago", e);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
