@@ -1,5 +1,7 @@
 package com.sophos.poc.pago.controller;
 
+import java.util.UUID;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sophos.poc.pago.controller.client.AuditClient;
 import com.sophos.poc.pago.controller.client.SecurityClient;
 import com.sophos.poc.pago.model.Payment;
@@ -54,7 +55,6 @@ public class PaymentController {
 
 		try {			
 			ObjectMapper jacksonMapper = new ObjectMapper();
-			jacksonMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 			logger.info(xRqUID +" - Request - "+jacksonMapper.writeValueAsString(payment));
 			
 			if((xSesion == null || xSesion.isEmpty()) || (xHaveToken && HttpStatus.UNAUTHORIZED.equals(securityClient.verifyJwtToken(xSesion).getStatusCode()))) {
@@ -71,6 +71,9 @@ public class PaymentController {
 				return new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
+			payment.setUuid(UUID.randomUUID().toString());
+				xSesion = UUID.randomUUID().toString();
+			
 			auditClient.saveAudit(
 						xSesion,
 						payment.getIdUser(),
@@ -86,7 +89,6 @@ public class PaymentController {
 			ResponseEntity<Status> res = paymentProcess.executePayment(payment, xIsError);
 			logger.info(xRqUID +" - Response - "+jacksonMapper.writeValueAsString(res));
 			return res;
-			
 
 		} catch (Exception e) {
 			logger.error("Ocurrio una exception inesperada", e);

@@ -54,6 +54,8 @@ public class AuditClient {
 			 headers.set("Content-Type", "application/json");
 			 HttpEntity<Audit> entity = new HttpEntity<Audit>(audit, headers);
 			
+			 logger.info("Request Audit: "+obj.writeValueAsString(entity));
+			 
 			 restTemplate.exchange(
 					System.getenv("POC_SERVICE_AUDIT_VALIDATE"),
 					HttpMethod.POST,
