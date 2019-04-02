@@ -54,25 +54,37 @@ public class PaymentController {
 			@RequestBody Payment payment) {
 
 		try {			
-			ObjectMapper jacksonMapper = new ObjectMapper();
-			logger.info(xRqUID +" - Request - "+jacksonMapper.writeValueAsString(payment));
+			ObjectMapper mapper = new ObjectMapper();
+			
+			logger.info("Headers: xSesion["+ xSesion +"] ");
+			logger.info("Request: "+mapper.writeValueAsString(payment));
+			String defaultError ="ERROR Ocurrio una exception inesperada";
 			
 			if((xSesion == null || xSesion.isEmpty()) || (xHaveToken && HttpStatus.UNAUTHORIZED.equals(securityClient.verifyJwtToken(xSesion).getStatusCode()))) {
-				Status status = new Status("500","El token no es valido o ya expiro. Intente mas tarde", "ERROR Ocurrio una exception inesperada", null);
-				return new ResponseEntity<>(status, HttpStatus.UNAUTHORIZED);
+				Status status = new Status("500","El token no es valido o ya expiro. Intente mas tarde", defaultError, null);
+				ResponseEntity<Status> res = new ResponseEntity<>(status, HttpStatus.UNAUTHORIZED);
+				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
+				return res;
 			}
 			if(payment == null) {
-				Status status = new Status("500", "ERROR Ocurrio una exception inesperada", "Objecto Orders es <NULL>", null);
-				return new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+				Status status = new Status("500", defaultError, "Objecto Payment es <NULL>", null);
+				ResponseEntity<Status> res = new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
+				return res;
 			}
 			
 			if(xRqUID == null || xChannel == null || xIPAddr == null ) {
-				Status status = new Status("500", "ERROR Ocurrio una exception inesperada", "Valor <NULL> en alguna cabecera obligatorio (X-RqUID X-Channel X-IPAddr X-Sesion)", null);
-				return new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+				Status status = new Status("500", defaultError, "Valor <NULL> en alguna cabecera obligatorio (X-RqUID X-Channel X-IPAddr X-Sesion)", null);
+				ResponseEntity<Status> res = new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
+				return res;
 			}
 			
+			
 			payment.setUuid(UUID.randomUUID().toString());
-				xSesion = UUID.randomUUID().toString();
+			
+			if(payment.getIdSesion() == null || payment.getIdSesion().isEmpty())
+				payment.setIdSesion(UUID.randomUUID().toString());
 			
 			auditClient.saveAudit(
 						xSesion,
@@ -87,7 +99,7 @@ public class PaymentController {
 			);
 
 			ResponseEntity<Status> res = paymentProcess.executePayment(payment, xIsError);
-			logger.info(xRqUID +" - Response - "+jacksonMapper.writeValueAsString(res));
+			logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
 			return res;
 
 		} catch (Exception e) {

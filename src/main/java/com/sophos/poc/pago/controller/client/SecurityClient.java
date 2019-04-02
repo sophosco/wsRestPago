@@ -35,7 +35,7 @@ public class SecurityClient{
 		
 		logger.info("Request Security: "+mapper.writeValueAsString(tokenRq));
 		ResponseEntity<String> response = restTemplate.postForEntity(System.getenv("POC_SERVICE_SECURITY_VALIDATE"), tokenRq, String.class);
-		logger.info("Response Security: "+response.getBody());
+		logger.info("Response Security["+ response.getStatusCode() +"] : "+response.getBody());
 		JSONObject json = new JSONObject(response.getBody());
 		String code = (String) json.getJSONObject("responseHeader").getJSONObject("status").get("code");
 		
