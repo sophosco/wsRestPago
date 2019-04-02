@@ -7,7 +7,7 @@ spec:
   ports:
     - name: http
       port: 18080
-    - name: http
+    - name: https
       port: 443
   type: LoadBalancer    
   selector:
