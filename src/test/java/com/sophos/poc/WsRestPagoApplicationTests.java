@@ -76,7 +76,7 @@ public class WsRestPagoApplicationTests {
 				xSesion,
 				xHaveToken,
 				xIsError,
-				payment
+				xSesion
 			);
 		
 		assertEquals(statusResponse.getBody().getCode(), "0");
@@ -114,7 +114,7 @@ public class WsRestPagoApplicationTests {
 				xSesion,
 				xHaveToken,
 				xIsError,
-				payment
+				xSesion
 			);
 		
 		assertEquals(statusResponse.getBody().getCode(), "100");

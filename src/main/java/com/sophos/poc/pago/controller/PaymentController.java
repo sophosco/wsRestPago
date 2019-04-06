@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,7 @@ import com.sophos.poc.pago.model.Status;
 
 
 @RestController
+@RequestMapping("/api/payment")
 public class PaymentController {
 	
 	@Autowired
@@ -41,9 +43,7 @@ public class PaymentController {
 		this.paymentProcess = paymentProcess;
 		this.auditClient = auditClient;
 	}
-
-	@RequestMapping(value = "/api/payment/add", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "/add", produces = { "application/json", "application/xml" }, consumes = {"application/json", "application/xml"} , method = RequestMethod.POST)
 	public ResponseEntity<Status> addPayment(
 			@RequestHeader(value = "X-RqUID", required = true) String xRqUID,
 			@RequestHeader(value = "X-Channel", required = true) String xChannel,
@@ -51,13 +51,29 @@ public class PaymentController {
 			@RequestHeader(value = "X-Sesion", required = true) String xSesion,
 			@RequestHeader(value = "X-HaveToken", required = false, defaultValue = "true") boolean xHaveToken,
 			@RequestHeader(value = "X-isError", required = false, defaultValue = "false") boolean xIsError,
-			@RequestBody Payment payment) {
+			@RequestBody String paymentStr) {
 
 		try {			
+			
+			JSONObject jsonObject = new JSONObject(paymentStr);
+			byte[] byteArray = Base64.decodeBase64(jsonObject.getString("payment").getBytes());
+			String decodedString = new String(byteArray);
 			ObjectMapper mapper = new ObjectMapper();
+			Payment payment = new Payment();
+			
+			try {
+				logger.info("String decode - "+decodedString);
+				payment = new ObjectMapper().readValue(decodedString, Payment.class);
+			} catch (Exception e1) {
+				logger.error("Ocurrio un error en el parseo del mensaje ["+ paymentStr +"]", e1);
+				Status status = new Status("500","Ocurrio un error en el parseo del mensaje", e1.getMessage(), null);
+				ResponseEntity<Status> res = new ResponseEntity<>(status, HttpStatus.BAD_REQUEST);
+				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
+				return res;
+			}
 			
 			logger.info("Headers: xSesion["+ xSesion +"] ");
-			logger.info("Request: "+mapper.writeValueAsString(payment));
+			logger.info("Request: "+mapper.writeValueAsString(paymentStr));
 			String defaultError ="ERROR Ocurrio una exception inesperada";
 			
 			if((xSesion == null || xSesion.isEmpty()) || (xHaveToken && HttpStatus.UNAUTHORIZED.equals(securityClient.verifyJwtToken(xSesion).getStatusCode()))) {
@@ -66,7 +82,7 @@ public class PaymentController {
 				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
 				return res;
 			}
-			if(payment == null) {
+			if(paymentStr == null) {
 				Status status = new Status("500", defaultError, "Objecto Payment es <NULL>", null);
 				ResponseEntity<Status> res = new ResponseEntity<>(status, HttpStatus.INTERNAL_SERVER_ERROR);
 				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));

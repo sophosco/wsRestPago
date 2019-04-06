@@ -43,5 +43,6 @@ public class Status implements Serializable{
 		this.exception = exception;
 		this.response = response;
 	}
+	public Status() {}
 
 }

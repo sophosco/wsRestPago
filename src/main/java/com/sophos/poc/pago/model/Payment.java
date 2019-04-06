@@ -1,15 +1,22 @@
 package com.sophos.poc.pago.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Payment {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Payment implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private String uuid;
+	@JsonProperty(value="idSession")
 	private String idSesion;
 	private String idUser;
 	private Date createDate;
+	@JsonProperty(value="cardCredit")
 	private CreditCard creditCard;
 	private PaymentGateway paymentGateway;
+	@JsonProperty(value ="customerPortafolio")
 	private CustomerPortfolio customerPortfolio;
 	private Double ammount;
 	
@@ -67,6 +74,20 @@ public class Payment {
 
 	public void setIdUser(String idUser) {
 		this.idUser = idUser;
+	}
+
+
+	public Payment(String uuid, String idSesion, String idUser, Date createDate, CreditCard creditCard,
+			PaymentGateway paymentGateway, CustomerPortfolio customerPortfolio, Double ammount) {
+		super();
+		this.uuid = uuid;
+		this.idSesion = idSesion;
+		this.idUser = idUser;
+		this.createDate = createDate;
+		this.creditCard = creditCard;
+		this.paymentGateway = paymentGateway;
+		this.customerPortfolio = customerPortfolio;
+		this.ammount = ammount;
 	}
 
 

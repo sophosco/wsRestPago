@@ -1,12 +1,14 @@
 package com.sophos.poc.pago.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(value = { "documentType"})
-public class PaymentGateway {
+public class PaymentGateway implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private String authorizationId;
 	private String debitHolderName;
 	private DocumentType documentType;
@@ -16,6 +18,7 @@ public class PaymentGateway {
 	private String document;
 	private String phone;
 	private String email;
+	private PersonType personType;
 	
 	public PaymentGateway() {}
 
@@ -91,8 +94,17 @@ public class PaymentGateway {
 		this.email = email;
 	}
 
+	public PersonType getPersonType() {
+		return personType;
+	}
+
+	public void setPersonType(PersonType personType) {
+		this.personType = personType;
+	}
+
 	public PaymentGateway(String authorizationId, String debitHolderName, DocumentType documentType, String nameGateway,
-			String entityCode, Date applicationDate, String document, String phone, String email) {
+			String entityCode, Date applicationDate, String document, String phone, String email,
+			PersonType personType) {
 		super();
 		this.authorizationId = authorizationId;
 		this.debitHolderName = debitHolderName;
@@ -103,7 +115,9 @@ public class PaymentGateway {
 		this.document = document;
 		this.phone = phone;
 		this.email = email;
+		this.personType = personType;
 	}
+
 	
 	
 }

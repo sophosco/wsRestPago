@@ -1,9 +1,11 @@
 package com.sophos.poc.pago.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CustomerPortfolio {
+public class CustomerPortfolio implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private String authorizationId;
 	private String entityCode;
 	private String tokenAuthorization;
@@ -41,6 +43,16 @@ public class CustomerPortfolio {
 		return portafolio;
 	}
 	public void setPortafolio(String portafolio) {
+		this.portafolio = portafolio;
+	}
+
+	public CustomerPortfolio(String authorizationId, String entityCode, String tokenAuthorization, Date applicationDate,
+			String portafolio) {
+		super();
+		this.authorizationId = authorizationId;
+		this.entityCode = entityCode;
+		this.tokenAuthorization = tokenAuthorization;
+		this.applicationDate = applicationDate;
 		this.portafolio = portafolio;
 	}
 }

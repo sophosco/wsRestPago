@@ -1,7 +1,10 @@
 package com.sophos.poc.pago.model;
 
-public class CreditCard {
+import java.io.Serializable;
+
+public class CreditCard implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private String cardHolderName;
 	private String cardNumber;
 	private String cvv;
@@ -39,6 +42,15 @@ public class CreditCard {
 		return expiredYear;
 	}
 	public void setExpiredYear(String expiredYear) {
+		this.expiredYear = expiredYear;
+	}
+
+	public CreditCard(String cardHolderName, String cardNumber, String cvv, String expiredMonth, String expiredYear) {
+		super();
+		this.cardHolderName = cardHolderName;
+		this.cardNumber = cardNumber;
+		this.cvv = cvv;
+		this.expiredMonth = expiredMonth;
 		this.expiredYear = expiredYear;
 	}
 }

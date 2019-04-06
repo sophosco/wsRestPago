@@ -1,6 +1,9 @@
 package com.sophos.poc.pago.model;
 
-public class PersonType {
+import java.io.Serializable;
+
+public class PersonType implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String value;
 	
@@ -22,4 +25,5 @@ public class PersonType {
 		this.value = value;
 	}
 
+	public PersonType() {}
 }
