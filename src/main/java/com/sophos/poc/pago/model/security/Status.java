@@ -1,6 +1,9 @@
 package com.sophos.poc.pago.model.security;
 
-public class Status {
+import java.io.Serializable;
+
+public class Status implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String code;
 	private String description;
 	
@@ -19,6 +22,12 @@ public class Status {
 	}
 
 	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Status(String code, String description) {
+		super();
+		this.code = code;
 		this.description = description;
 	}
 	

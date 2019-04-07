@@ -1,7 +1,10 @@
 	package com.sophos.poc.pago.model.security;
 
-public class TokenRequest {
+import java.io.Serializable;
+
+public class TokenRequest implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private RequestHeader requestHeader;
 	private RequestPayload requestPayload;
 	
@@ -18,6 +21,13 @@ public class TokenRequest {
 		return requestPayload;
 	}
 	public void setRequestPayload(RequestPayload requestPayload) {
+		this.requestPayload = requestPayload;
+	}
+
+
+	public TokenRequest(RequestHeader requestHeader, RequestPayload requestPayload) {
+		super();
+		this.requestHeader = requestHeader;
 		this.requestPayload = requestPayload;
 	}
 	

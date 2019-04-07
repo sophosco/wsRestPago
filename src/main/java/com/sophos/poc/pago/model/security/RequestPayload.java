@@ -1,8 +1,12 @@
 package com.sophos.poc.pago.model.security;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RequestPayload {
+public class RequestPayload implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@JsonProperty( value="Id")
 	private String Id;
@@ -24,5 +28,12 @@ public class RequestPayload {
 	public void setId(String id) {
 		Id = id;
 	}
+
+	public RequestPayload(String id, Object payload) {
+		super();
+		Id = id;
+		this.payload = payload;
+	}
+	public RequestPayload() {}
 
 }

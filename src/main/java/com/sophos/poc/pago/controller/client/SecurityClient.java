@@ -23,7 +23,6 @@ import com.sophos.poc.pago.model.security.TokenRequest;
 @Service
 public class SecurityClient{
 
-	
 	private static final Logger logger = LogManager.getLogger(SecurityClient.class);
 
 	public ResponseEntity<Status> verifyJwtToken(String jwt) throws JsonProcessingException{

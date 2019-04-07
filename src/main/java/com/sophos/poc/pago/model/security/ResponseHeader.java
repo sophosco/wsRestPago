@@ -1,7 +1,10 @@
 package com.sophos.poc.pago.model.security;
 
-public class ResponseHeader {
+import java.io.Serializable;
+
+public class ResponseHeader implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private ResponseHeader responseInfo;
 	private Status status;
 	private ResponsePayload responsePayload;

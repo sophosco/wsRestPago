@@ -1,9 +1,11 @@
 package com.sophos.poc.pago.model.security;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ResponseInfo {
+public class ResponseInfo implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private String system;
 	private Date responseDate;
 	
@@ -24,6 +26,13 @@ public class ResponseInfo {
 	public void setResponseDate(Date responseDate) {
 		this.responseDate = responseDate;
 	}
+
+	public ResponseInfo(String system, Date responseDate) {
+		super();
+		this.system = system;
+		this.responseDate = responseDate;
+	}
+	
 	
 
 }
