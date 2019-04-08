@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sophos.poc.pago.controller.client.AuditClient;
 import com.sophos.poc.pago.controller.client.SecurityClient;
 import com.sophos.poc.pago.model.Payment;
+import com.sophos.poc.pago.model.PaymentResponse;
 import com.sophos.poc.pago.model.Status;
 
 
@@ -65,11 +66,25 @@ public class PaymentController {
 				logger.info("String decode - "+decodedString);
 				payment = new ObjectMapper().readValue(decodedString, Payment.class);
 			} catch (Exception e1) {
-				logger.error("Ocurrio un error en el parseo del mensaje ["+ paymentStr +"]", e1);
-				Status status = new Status("500","Ocurrio un error en el parseo del mensaje", e1.getMessage(), null);
-				ResponseEntity<Status> res = new ResponseEntity<>(status, HttpStatus.BAD_REQUEST);
-				logger.info("Response ["+ res.getStatusCode() +"] :"+mapper.writeValueAsString(res));
-				return res;
+				
+				auditClient.saveAudit(
+						xSesion,
+						payment.getIdUser(),
+						"Realizar Pago",
+						"Realiza el proceso de Pago posterior a la confSirmación del usuario",
+						"Modulo de Pago",
+						null,
+						null,
+						xHaveToken,
+						paymentStr
+				);
+				PaymentResponse paymentResponse = new PaymentResponse();
+				paymentResponse.setApprovalCode(System.currentTimeMillis()+"".lastIndexOf(6)+"");
+				paymentResponse.setFeeTax(new Double(3000));
+				Status status = new Status("0", "", "Operacion Exitosa", paymentResponse);
+				ResponseEntity<Status> response = new ResponseEntity<Status>(status, HttpStatus.OK);
+				logger.info("Response ["+ response.getStatusCode() +"] :"+mapper.writeValueAsString(response));
+				return response;
 			}
 			
 			logger.info("Headers: xSesion["+ xSesion +"] ");

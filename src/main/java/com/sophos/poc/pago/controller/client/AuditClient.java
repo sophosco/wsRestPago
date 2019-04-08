@@ -82,4 +82,59 @@ public class AuditClient {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@Async
+	public ResponseEntity<Status> saveAudit(
+				String IdSesion,
+				String IdUsuario,
+				String TipoAccion,
+				String DescripcionAccion, 
+				String ModuloAplicacion,
+				String IdProducto,
+				String IdCategoria,
+				boolean xHaveToken,
+				String Payment
+			) throws JsonProcessingException{
+		
+		RestTemplate restTemplate = new RestTemplate(); 
+		ObjectMapper obj = new ObjectMapper();
+		
+
+		try {
+			 HttpHeaders headers = new HttpHeaders();
+			 headers.set("X-RqUID", UUID.randomUUID().toString());
+			 headers.set("X-Channel", "wsRestPago");
+			 headers.set("X-IPAddr", "192.169.1.1");
+			 headers.set("X-Sesion", IdSesion);
+			 headers.set("X-haveToken", xHaveToken+"");
+			 headers.set("Content-Type", "application/json");
+			 
+			 Accion accion = new Accion();
+			 accion.setDescripcionAccion(DescripcionAccion);
+			 OffsetDateTime offsetDate = OffsetDateTime.now();
+			 accion.setFechaCreacion(offsetDate);
+			 accion.setIdCategoria(IdCategoria);
+			 accion.setIdProducto(IdProducto);
+			 accion.setIdSesion(IdSesion);
+			 accion.setIdUsuario(IdUsuario);
+			 accion.setMessageData(Payment);
+			 accion.setModuloAplicacion(ModuloAplicacion);
+			 accion.setTipoAccion(TipoAccion);
+			 
+			 HttpEntity<Accion> entity = new HttpEntity<Accion>(accion, headers);
+			
+			 logger.info("Request Audit: "+obj.writeValueAsString(entity));
+			 
+			 ResponseEntity<String> response =  restTemplate.exchange(
+								System.getenv("POC_SERVICE_AUDIT_VALIDATE"),
+								HttpMethod.POST,
+								entity,
+								String.class);
+			 
+			 logger.info("Response Audit ["+ response.getStatusCode() +"]: ", response.getBody());
+		}catch(Exception e) {
+			logger.error("Ocurrio un error al registrar auditoria de Pago", e);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
