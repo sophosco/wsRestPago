@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: wsrestpago
-          image: 887482798966.dkr.ecr.us-east-2.amazonaws.com//prueba/sophosstore/wsrestpago:beta
+          image: 887482798966.dkr.ecr.us-east-2.amazonaws.com/sophosstore/wsrestpago:beta
           resources:
             limits:
               memory: "500Mi"
