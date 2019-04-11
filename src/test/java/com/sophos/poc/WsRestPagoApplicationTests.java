@@ -118,7 +118,7 @@ public class WsRestPagoApplicationTests {
 				paymentRq
 			);
 		
-		assertEquals(statusResponse.getBody().getCode(), "1500");
+		assertEquals(statusResponse.getBody().getCode(), "500");
 //		assertEquals(statusResponse.getStatusCode(), HttpStatus.PARTIAL_CONTENT);
 	}
 	
